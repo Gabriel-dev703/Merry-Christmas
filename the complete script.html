@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>secret message!!!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+            position: relative;
+        }
+
+        #btn-nuclear {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background-color: #FF4C4C;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            line-height: 1.2;
+            transition: transform 0.3s, background-color 0.3s;
+            outline: none;
+            z-index: 10;
+        }
+
+        #btn-nuclear:hover {
+            transform: scale(1.1);
+            background-color: #FF1A1A;
+        }
+
+        
+        .explosion {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background-color: rgba(255, 165, 0, 1);
+            opacity: 0.8;
+            box-shadow: 0 0 50px 20px rgba(255, 255, 0, 0.5);
+            animation: explosionAnimation 1.5s forwards;
+        }
+
+      
+        .confetti {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: random;
+            border-radius: 50%;
+            animation: confettiFall 5s infinite linear;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+       
+        @keyframes explosionAnimation {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                width: 150vw;
+                height: 150vh;
+                opacity: 0;
+                transform: scale(3);
+            }
+        }
+
+       
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+       
+        .message {
+            position: absolute;
+            font-size: 50px;
+            font-weight: bold;
+            color: #FFD700;
+            transform: scale(0);
+            animation: messageAnimation 1s forwards;
+            z-index: 20;
+        }
+
+        @keyframes messageAnimation {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button id="btn-nuclear">press the button</button>
+    <div id="explosion-container"></div>
+
+    <audio id="explosion-sound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+
+    <script>
+        const btnNuclear = document.getElementById('btn-nuclear');
+        const explosionContainer = document.getElementById('explosion-container');
+        const explosionSound = document.getElementById('explosion-sound');
+        let pressed = false; 
+
+        btnNuclear.addEventListener('click', () => {
+            if (pressed) return;  
+            pressed = true;
+            
+         
+            createExplosion();
+
+            
+            generateConfetti();
+
+            
+            showMessage();
+
+         
+            explosionSound.play();
+            
+          
+            btnNuclear.style.display = 'none';
+        });
+
+       
+        function createExplosion() {
+            const explosion = document.createElement('div');
+            explosion.classList.add('explosion');
+            explosion.style.left = `${window.innerWidth / 2 - 150}px`;
+            explosion.style.top = `${window.innerHeight / 2 - 150}px`;
+            explosionContainer.appendChild(explosion);
+        }
+
+    
+        function generateConfetti() {
+            setInterval(() => {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+
+                
+                const randomColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.backgroundColor = randomColor;
+
+                
+                const startPositionX = Math.random() * window.innerWidth;
+                confetti.style.left = `${startPositionX}px`;
+
+              
+                document.body.appendChild(confetti);
+            }, 30); 
+        }
+
+        
+        function showMessage() {
+            const message = document.createElement('div');
+            message.classList.add('message');
+            message.textContent = 'Merry Christmas!';
+            message.style.left = `${window.innerWidth / 2 - 150}px`;
+            message.style.top = `${window.innerHeight / 2 - 80}px`;
+            document.body.appendChild(message);
+        }
+    </script>
+
+</body>
+</html>
